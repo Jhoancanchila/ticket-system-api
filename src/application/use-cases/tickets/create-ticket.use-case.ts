@@ -37,8 +37,10 @@ export const createTicketUseCase = (
     // 3. Enviar email de confirmación (sin bloquear el flujo)
     emailService
       .sendTicketCreatedEmail(client.email.getValue(), ticket.id, ticket.title)
-      .catch(() => {
-        // Log error silently - email failure shouldn't stop ticket creation
+      .catch((error) => {
+        // Log error but don't stop ticket creation
+        console.error('Error enviando email de confirmación:', error.message);
+        console.error('Detalles del error:', error);
       });
 
     return ticket;

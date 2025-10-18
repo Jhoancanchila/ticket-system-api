@@ -1,24 +1,39 @@
-import { Resend } from 'resend';
+import nodemailer from 'nodemailer';
 import { IEmailService, EmailOptions } from '@application/ports/services/email.service.interface';
 import { config } from '../config/env';
 
 export class ResendEmailService implements IEmailService {
-  private resend: Resend;
+  private readonly transporter: nodemailer.Transporter;
 
   constructor() {
-    this.resend = new Resend(config.resend.apiKey);
+    this.transporter = nodemailer.createTransport({
+      host: 'smtp.gmail.com',
+      port: 587,
+      secure: false,
+      auth: {
+        user: config.nodemailer.fromEmail,
+        pass: config.nodemailer.fromEmailPassword
+      }
+    });
   }
 
   async sendEmail(options: EmailOptions): Promise<void> {
     try {
-      await this.resend.emails.send({
-        from: `${config.resend.fromName} <${config.resend.fromEmail}>`,
+      const result = await this.transporter.sendMail({
+        from: `${config.nodemailer.fromName} <${config.nodemailer.fromEmail}>`,
         to: options.to,
         subject: options.subject,
         html: options.html
       });
-    } catch (error) {
-      throw new Error(`Failed to send email: ${error}`);
+      
+    } catch (error: any) {
+      console.error('Error detallado al enviar email:', {
+        message: error.message,
+        statusCode: error.statusCode,
+        name: error.name,
+        error: error
+      });
+      throw new Error(`Failed to send email: ${error.message || error}`);
     }
   }
 

@@ -21,10 +21,11 @@ interface Config {
     refreshSecret: string;
     refreshExpiresIn: string;
   };
-  resend: {
+  nodemailer: {
     apiKey: string;
     fromEmail: string;
     fromName: string;
+    fromEmailPassword: string;
   };
   cors: {
     origin: string;
@@ -50,10 +51,11 @@ export const config: Config = {
     refreshSecret: process.env.JWT_REFRESH_SECRET || 'change-this-refresh-secret',
     refreshExpiresIn: process.env.JWT_REFRESH_EXPIRES_IN || '7d'
   },
-  resend: {
+  nodemailer: {
     apiKey: process.env.RESEND_API_KEY || '',
     fromEmail: process.env.FROM_EMAIL || 'onboarding@resend.dev',
-    fromName: process.env.FROM_NAME || 'Sistema de Tickets'
+    fromName: process.env.FROM_NAME || 'Sistema de Tickets',
+    fromEmailPassword: process.env.FROM_EMAIL_PASSWORD || ''
   },
   cors: {
     origin: process.env.CORS_ORIGIN || 'http://localhost:5173'
