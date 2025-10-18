@@ -7,8 +7,8 @@ export class CommentModel extends Model {
   public id!: string;
   public ticketId!: string;
   public userId!: string;
+  public supportId!: string;
   public content!: string;
-  public isInternal!: boolean;
   public readonly createdAt!: Date;
 }
 
@@ -39,11 +39,6 @@ CommentModel.init(
       type: DataTypes.TEXT,
       allowNull: false
     },
-    isInternal: {
-      type: DataTypes.BOOLEAN,
-      allowNull: false,
-      defaultValue: false
-    }
   },
   {
     sequelize,
