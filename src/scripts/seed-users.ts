@@ -19,9 +19,27 @@ const users = [
     role: UserRole.SUPPORT
   },
   {
-    name: 'Cliente Demo',
-    email: 'cliente@test.com',
-    password: 'cliente123',
+    name: 'Cliente Juan',
+    email: 'juan@test.com',
+    password: 'juan123',
+    role: UserRole.CLIENT
+  },
+  {
+    name: 'Cliente María',
+    email: 'maria@test.com',
+    password: 'maria123',
+    role: UserRole.CLIENT
+  },
+  {
+    name: 'Soporte Técnico',
+    email: 'soporte@test.com',
+    password: 'soporte123',
+    role: UserRole.SUPPORT
+  },
+  {
+    name: 'Cliente Pedro',
+    email: 'pedro@test.com',
+    password: 'pedro123',
     role: UserRole.CLIENT
   }
 ];
