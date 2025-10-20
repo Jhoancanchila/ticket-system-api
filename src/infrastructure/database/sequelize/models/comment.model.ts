@@ -7,7 +7,6 @@ export class CommentModel extends Model {
   public id!: string;
   public ticketId!: string;
   public userId!: string;
-  public supportId!: string;
   public content!: string;
   public readonly createdAt!: Date;
 }
@@ -49,5 +48,8 @@ CommentModel.init(
 );
 
 // Relaciones
-CommentModel.belongsTo(TicketModel, { foreignKey: 'ticketId' });
-CommentModel.belongsTo(UserModel, { foreignKey: 'userId' });
+CommentModel.belongsTo(TicketModel, { foreignKey: 'ticketId', as: 'ticket' });
+CommentModel.belongsTo(UserModel, { foreignKey: 'userId', as: 'user' });
+
+// Establecer relación hasMany en Ticket
+TicketModel.hasMany(CommentModel, { foreignKey: 'ticketId', as: 'comments' });

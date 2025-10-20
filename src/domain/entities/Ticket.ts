@@ -13,7 +13,8 @@ export class Ticket {
     public readonly clientId: string,
     public readonly createdAt: Date,
     public updatedAt: Date,
-    public resolvedAt: Date | null
+    public resolvedAt: Date | null,
+    public comments?: any[] // Array opcional de comentarios
   ) {}
 
   // Métodos de negocio
@@ -73,6 +74,7 @@ export class Ticket {
     createdAt: Date;
     updatedAt: Date;
     resolvedAt: Date | null;
+    comments?: any[];
   }): Ticket {
     return new Ticket(
       data.id,
@@ -82,13 +84,14 @@ export class Ticket {
       data.clientId,
       data.createdAt,
       data.updatedAt,
-      data.resolvedAt
+      data.resolvedAt,
+      data.comments
     );
   }
 
   // Convertir a objeto simple
   toPlainObject() {
-    return {
+    const obj: any = {
       id: this.id,
       title: this.title,
       description: this.description,
@@ -98,5 +101,11 @@ export class Ticket {
       updatedAt: this.updatedAt,
       resolvedAt: this.resolvedAt
     };
+
+    if (this.comments && this.comments.length > 0) {
+      obj.comments = this.comments;
+    }
+
+    return obj;
   }
 }

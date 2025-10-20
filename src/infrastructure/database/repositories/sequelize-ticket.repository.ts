@@ -2,6 +2,8 @@ import { ITicketRepository, TicketFilters, PaginationOptions, PaginatedResult } 
 import { Ticket } from '@domain/entities/Ticket';
 import { TicketStatus } from '@domain/enums/TicketStatus';
 import { TicketModel } from '../sequelize/models/ticket.model';
+import { CommentModel } from '../sequelize/models/comment.model';
+import { UserModel } from '../sequelize/models/user.model';
 import { Op } from 'sequelize';
 import { sequelize } from '../sequelize/config';
 
@@ -22,11 +24,26 @@ export class SequelizeTicketRepository implements ITicketRepository {
   }
 
   async findById(id: string): Promise<Ticket | null> {
-    const ticketModel = await TicketModel.findByPk(id);
+    const ticketModel = await TicketModel.findByPk(id, {
+      include: [
+        {
+          model: CommentModel,
+          as: 'comments',
+          include: [
+            {
+              model: UserModel,
+              as: 'user',
+              attributes: ['id', 'name', 'email']
+            }
+          ],
+          order: [['createdAt', 'ASC']]
+        }
+      ]
+    });
     
     if (!ticketModel) return null;
     
-    return Ticket.create({
+    const ticketData: any = {
       id: ticketModel.id,
       title: ticketModel.title,
       description: ticketModel.description,
@@ -35,7 +52,25 @@ export class SequelizeTicketRepository implements ITicketRepository {
       createdAt: ticketModel.createdAt,
       updatedAt: ticketModel.updatedAt,
       resolvedAt: ticketModel.resolvedAt
-    });
+    };
+
+    // Agregar comentarios si existen
+    if ((ticketModel as any).comments) {
+      ticketData.comments = (ticketModel as any).comments.map((comment: any) => ({
+        id: comment.id,
+        ticketId: comment.ticketId,
+        userId: comment.userId,
+        content: comment.content,
+        createdAt: comment.createdAt,
+        user: comment.user ? {
+          id: comment.user.id,
+          name: comment.user.name,
+          email: comment.user.email
+        } : null
+      }));
+    }
+    
+    return Ticket.create(ticketData);
   }
 
   async findAll(
@@ -61,11 +96,25 @@ export class SequelizeTicketRepository implements ITicketRepository {
       where,
       limit,
       offset,
-      order: [['createdAt', 'DESC']]
+      order: [['createdAt', 'DESC']],
+      include: [
+        {
+          model: CommentModel,
+          as: 'comments',
+          include: [
+            {
+              model: UserModel,
+              as: 'user',
+              attributes: ['id', 'name', 'email']
+            }
+          ],
+          order: [['createdAt', 'ASC']]
+        }
+      ]
     });
 
-    const tickets = rows.map(model =>
-      Ticket.create({
+    const tickets = rows.map(model => {
+      const ticketData: any = {
         id: model.id,
         title: model.title,
         description: model.description,
@@ -74,8 +123,26 @@ export class SequelizeTicketRepository implements ITicketRepository {
         createdAt: model.createdAt,
         updatedAt: model.updatedAt,
         resolvedAt: model.resolvedAt
-      })
-    );
+      };
+
+      // Agregar comentarios si existen
+      if ((model as any).comments) {
+        ticketData.comments = (model as any).comments.map((comment: any) => ({
+          id: comment.id,
+          ticketId: comment.ticketId,
+          userId: comment.userId,
+          content: comment.content,
+          createdAt: comment.createdAt,
+          user: comment.user ? {
+            id: comment.user.id,
+            name: comment.user.name,
+            email: comment.user.email
+          } : null
+        }));
+      }
+
+      return Ticket.create(ticketData);
+    });
 
     return {
       data: tickets,
