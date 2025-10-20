@@ -31,10 +31,10 @@ const users = [
     role: UserRole.CLIENT
   },
   {
-    name: 'Soporte Técnico',
-    email: 'soporte@test.com',
-    password: 'soporte123',
-    role: UserRole.SUPPORT
+    name: 'cliente Luis',
+    email: 'luis@test.com',
+    password: 'luis123',
+    role: UserRole.CLIENT
   },
   {
     name: 'Cliente Pedro',

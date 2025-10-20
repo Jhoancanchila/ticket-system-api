@@ -9,11 +9,13 @@ interface Config {
     apiVersion: string;
   };
   database: {
+    url?: string;
     host: string;
     port: number;
     name: string;
     user: string;
     password: string;
+    ssl: boolean;
   };
   jwt: {
     secret: string;
@@ -39,11 +41,13 @@ export const config: Config = {
     apiVersion: process.env.API_VERSION || 'v1'
   },
   database: {
+    url: process.env.DATABASE_URL,
     host: process.env.DB_HOST || 'localhost',
     port: parseInt(process.env.DB_PORT || '5432', 10),
     name: process.env.DB_NAME || 'ticket_system',
     user: process.env.DB_USER || 'postgres',
     password: process.env.DB_PASSWORD || '',
+    ssl: process.env.DB_SSL === 'true' || process.env.NODE_ENV === 'production',
   },
   jwt: {
     secret: process.env.JWT_SECRET as string,

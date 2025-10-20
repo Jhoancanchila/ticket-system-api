@@ -104,17 +104,46 @@ CORS_ORIGIN=http://localhost:5173
 
 ---
 
-## 🐳 Configuración de Base de Datos con Docker
+## �️ Configuración de Base de Datos
 
-### Paso 1: Iniciar PostgreSQL con Docker Compose
+Tienes dos opciones para la base de datos:
 
-El proyecto incluye un archivo `docker-compose.yml` configurado con PostgreSQL.
+### Opción 1: Base de Datos en la Nube
+
+#### Configurar:
+
+1. **Obtener URL de conexión** de tu proyecto
+2. **Configurar en `.env`:**
+
+```bash
+# Ejemplo Base de datos en Neon
+DATABASE_URL=postgresql://user:password@host/database?sslmode=require
+DB_SSL=true
+```
+
+3. **Iniciar el servidor:**
+
+```bash
+npm run dev
+```
+
+4. **Crear tablas y usuarios:**
+
+```bash
+npm run seed
+```
+
+### Opción 2: Base de Datos Local con Docker 🐳
+
+**Ventajas:** Control total, no depende de internet, ideal para desarrollo.
+
+#### Paso 1: Iniciar PostgreSQL con Docker Compose
 
 ```bash
 docker-compose up -d
 ```
 
-Esto creará y ejecutará:
+Esto creará:
 - **Contenedor:** ticket_system-db
 - **Imagen:** postgres:16-alpine
 - **Puerto:** 5432
