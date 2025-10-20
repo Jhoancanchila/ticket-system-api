@@ -46,16 +46,16 @@ export const config: Config = {
     password: process.env.DB_PASSWORD || '',
   },
   jwt: {
-    secret: process.env.JWT_SECRET || 'change-this-secret',
+    secret: process.env.JWT_SECRET as string,
     expiresIn: process.env.JWT_EXPIRES_IN || '1h',
-    refreshSecret: process.env.JWT_REFRESH_SECRET || 'change-this-refresh-secret',
+    refreshSecret: process.env.JWT_REFRESH_SECRET as string,
     refreshExpiresIn: process.env.JWT_REFRESH_EXPIRES_IN || '7d'
   },
   nodemailer: {
-    apiKey: process.env.RESEND_API_KEY || '',
-    fromEmail: process.env.FROM_EMAIL || 'onboarding@resend.dev',
-    fromName: process.env.FROM_NAME || 'Sistema de Tickets',
-    fromEmailPassword: process.env.FROM_EMAIL_PASSWORD || ''
+    apiKey: process.env.NODEMAILER_API_KEY as string,
+    fromEmail: process.env.FROM_EMAIL as string,
+    fromName: process.env.FROM_NAME as string,
+    fromEmailPassword: process.env.FROM_EMAIL_PASSWORD as string,
   },
   cors: {
     origin: process.env.CORS_ORIGIN || 'http://localhost:5173'

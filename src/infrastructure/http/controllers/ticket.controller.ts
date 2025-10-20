@@ -9,12 +9,12 @@ import { createTicketUseCase } from "@application/use-cases/tickets/create-ticke
 import { createGetTicketsUseCase } from "@application/use-cases/tickets/get-tickets.use-case";
 import { createGetTicketByIdUseCase } from "@application/use-cases/tickets/get-ticket-by-id.use-case";
 
-import { ResendEmailService } from "@infrastructure/services/resend-email.service";
+import { SendEmailService } from "@infrastructure/services/send-email.service";
 
 const ticketRepository = new SequelizeTicketRepository();
 const userRepository = new SequelizeUserRepository();
 
-const resendEmailService = new ResendEmailService();
+const sendEmailService = new SendEmailService();
 
 export class TicketController{
   static async createTicket(req: Request, res: Response, next: NextFunction): Promise<void> {
@@ -22,7 +22,7 @@ export class TicketController{
       const ticketData = req.body;
       const clientId = (req as any).user.id;
 
-      const createTicket = createTicketUseCase(ticketRepository, userRepository, resendEmailService);
+      const createTicket = createTicketUseCase(ticketRepository, userRepository, sendEmailService);
       const ticket = await createTicket(clientId, ticketData);
       
       res.status(201).json({
@@ -116,7 +116,7 @@ export class TicketController{
       const ticketData = req.body;
       const user = (req as any).user;
       
-      const changeTicketStatus = createChangeTicketStatusUseCase(ticketRepository, userRepository, resendEmailService);
+      const changeTicketStatus = createChangeTicketStatusUseCase(ticketRepository, userRepository, sendEmailService);
       const ticket = await changeTicketStatus(ticketId, user, ticketData);
       
       res.status(200).json({

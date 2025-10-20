@@ -2,7 +2,7 @@ import nodemailer from 'nodemailer';
 import { IEmailService, EmailOptions } from '@application/ports/services/email.service.interface';
 import { config } from '../config/env';
 
-export class ResendEmailService implements IEmailService {
+export class SendEmailService implements IEmailService {
   private readonly transporter: nodemailer.Transporter;
 
   constructor() {
