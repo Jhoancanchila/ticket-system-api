@@ -56,3 +56,4 @@ TicketModel.init(
 
 // Relaciones
 TicketModel.belongsTo(UserModel, { foreignKey: 'clientId', as: 'client' });
+TicketModel.belongsTo(UserModel, { foreignKey: 'clientId', as: 'createdBy' });

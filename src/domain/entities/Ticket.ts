@@ -14,7 +14,8 @@ export class Ticket {
     public readonly createdAt: Date,
     public updatedAt: Date,
     public resolvedAt: Date | null,
-    public comments?: any[] // Array opcional de comentarios
+    public comments?: any[], // Array opcional de comentarios
+    public createdBy?: any // Usuario que creó el ticket
   ) {}
 
   // Métodos de negocio
@@ -75,6 +76,7 @@ export class Ticket {
     updatedAt: Date;
     resolvedAt: Date | null;
     comments?: any[];
+    createdBy?: any;
   }): Ticket {
     return new Ticket(
       data.id,
@@ -85,7 +87,8 @@ export class Ticket {
       data.createdAt,
       data.updatedAt,
       data.resolvedAt,
-      data.comments
+      data.comments,
+      data.createdBy
     );
   }
 
@@ -101,6 +104,10 @@ export class Ticket {
       updatedAt: this.updatedAt,
       resolvedAt: this.resolvedAt
     };
+
+    if (this.createdBy) {
+      obj.createdBy = this.createdBy;
+    }
 
     if (this.comments && this.comments.length > 0) {
       obj.comments = this.comments;

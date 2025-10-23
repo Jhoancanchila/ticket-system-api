@@ -32,7 +32,7 @@ export class User {
   }
 
   canManageAllTickets(): boolean {
-    return this.isAdmin() || this.isSupport();
+    return this.isAdmin() || this.isSupport() || this.isClient();
   }
 
   canAccessTicket(ticketOwnerId: string): boolean {

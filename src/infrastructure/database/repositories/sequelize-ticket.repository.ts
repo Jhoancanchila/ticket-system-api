@@ -33,10 +33,15 @@ export class SequelizeTicketRepository implements ITicketRepository {
             {
               model: UserModel,
               as: 'user',
-              attributes: ['id', 'name', 'email']
+              attributes: ['id', 'name', 'email', 'role']
             }
           ],
           order: [['createdAt', 'ASC']]
+        },
+        { 
+          model: UserModel, 
+          as: 'createdBy', 
+          attributes: ['id', 'name', 'email', 'role']
         }
       ]
     });
@@ -54,6 +59,16 @@ export class SequelizeTicketRepository implements ITicketRepository {
       resolvedAt: ticketModel.resolvedAt
     };
 
+    // Agregar usuario creador si existe
+    if ((ticketModel as any).createdBy) {
+      ticketData.createdBy = {
+        id: (ticketModel as any).createdBy.id,
+        name: (ticketModel as any).createdBy.name,
+        email: (ticketModel as any).createdBy.email,
+        role: (ticketModel as any).createdBy.role
+      };
+    }
+
     // Agregar comentarios si existen
     if ((ticketModel as any).comments) {
       ticketData.comments = (ticketModel as any).comments.map((comment: any) => ({
@@ -65,7 +80,8 @@ export class SequelizeTicketRepository implements ITicketRepository {
         user: comment.user ? {
           id: comment.user.id,
           name: comment.user.name,
-          email: comment.user.email
+          email: comment.user.email,
+          role: comment.user.role
         } : null
       }));
     }
@@ -105,7 +121,7 @@ export class SequelizeTicketRepository implements ITicketRepository {
             {
               model: UserModel,
               as: 'user',
-              attributes: ['id', 'name', 'email']
+              attributes: ['id', 'name', 'email', 'role']
             }
           ],
           order: [['createdAt', 'ASC']]
@@ -136,7 +152,8 @@ export class SequelizeTicketRepository implements ITicketRepository {
           user: comment.user ? {
             id: comment.user.id,
             name: comment.user.name,
-            email: comment.user.email
+            email: comment.user.email,
+            role: comment.user.role
           } : null
         }));
       }
