@@ -8,6 +8,7 @@
     "build": "tsc",
     "start": "node dist/server.js",
     "seed": "ts-node -r tsconfig-paths/register src/scripts/seed-users.ts",
+    "fix-cascade": "ts-node -r tsconfig-paths/register src/scripts/fix-cascade-delete.ts",
     "lint": "eslint . --ext .ts",
     "format": "prettier --write \"src/**/*.ts\"",
     "test": "jest",

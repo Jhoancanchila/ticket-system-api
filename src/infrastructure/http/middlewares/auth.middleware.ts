@@ -34,7 +34,7 @@ export const authMiddleware = async (
 
     req.user = user;
     next();
-  } catch (error) {
-    next(error);
+  } catch (error) {      
+    next(new UnauthorizedError('Token inválido o expirado'));
   }
 };

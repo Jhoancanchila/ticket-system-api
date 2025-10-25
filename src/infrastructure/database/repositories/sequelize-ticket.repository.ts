@@ -181,6 +181,9 @@ export class SequelizeTicketRepository implements ITicketRepository {
   }
 
   async delete(id: string): Promise<void> {
+    // Primero eliminar los comentarios asociados
+    await CommentModel.destroy({ where: { ticketId: id } });
+    // Luego eliminar el ticket
     await TicketModel.destroy({ where: { id } });
   }
 

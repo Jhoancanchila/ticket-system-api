@@ -24,7 +24,8 @@ CommentModel.init(
       references: {
         model: TicketModel,
         key: 'id'
-      }
+      },
+      onDelete: 'CASCADE'
     },
     userId: {
       type: DataTypes.UUID,
@@ -48,8 +49,8 @@ CommentModel.init(
 );
 
 // Relaciones
-CommentModel.belongsTo(TicketModel, { foreignKey: 'ticketId', as: 'ticket' });
+CommentModel.belongsTo(TicketModel, { foreignKey: 'ticketId', as: 'ticket', onDelete: 'CASCADE' });
 CommentModel.belongsTo(UserModel, { foreignKey: 'userId', as: 'user' });
 
 // Establecer relación hasMany en Ticket
-TicketModel.hasMany(CommentModel, { foreignKey: 'ticketId', as: 'comments' });
+TicketModel.hasMany(CommentModel, { foreignKey: 'ticketId', as: 'comments', onDelete: 'CASCADE' });
